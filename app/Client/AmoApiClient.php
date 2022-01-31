@@ -12,7 +12,6 @@ use App\Oauth\AmoOauth;
 
 class AmoApiClient extends AmoOauth{
 
-
     public function __construct($subDomain, $client_id, $client_secret, $code, $redirect_uri, $pathToConfig)
     {
         parent::__construct($subDomain, $client_id, $client_secret, $code, $redirect_uri, $pathToConfig);
@@ -28,6 +27,10 @@ class AmoApiClient extends AmoOauth{
         } elseif ($name === "company"){
             return new CompanyServices($this->apiUri, $this->configJSON["access_token"]);
         }
+    }
+
+    public function __get($key){
+        return $this->$key;
     }
 
     public function leads(): LeadServices{

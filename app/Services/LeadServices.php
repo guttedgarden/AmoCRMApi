@@ -35,11 +35,11 @@ class LeadServices extends BaseServices implements ServicesInterface {
     }
 
 
-    public function save(array $array) :array
-    {
-        // TODO: Implement create() method.
-        return $this->httpClient->request("POST",UriConstants::LEAD_URI_V4, [$array], $this->headers);
-    }
+//    public function save(array $array) :array
+//    {
+//        // TODO: Implement create() method.
+//        return $this->httpClient->request("POST",UriConstants::LEAD_URI_V4, [$array], $this->headers);
+//    }
 
     public function update(array $array) : array
     {
@@ -49,10 +49,14 @@ class LeadServices extends BaseServices implements ServicesInterface {
         return $this->httpClient->request("PATCH", UriConstants::LEAD_URI_V4 . "/" . $array["id"], $array, $this->headers);
     }
 
-    public function addNoteById (int $id, array $note){
+    public function addNoteById (int $id, array $note)
+    {
         // TODO: Implement addNoteById() method.
         return $this->httpClient->request("POST", UriConstants::LEAD_URI_V4 . '/' . $id . '/notes', [$note], $this->headers);
     }
 
-
+    public function create(): Lead
+    {
+        return new Lead($this->httpClient, $this->headers);
+    }
 }

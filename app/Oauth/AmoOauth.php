@@ -17,7 +17,7 @@ class AmoOauth {
      * Domain name extensions. Example *test*.amocrm.ru
      * @var string
      */
-    private $subDomain;
+    public $subDomain;
 
     /**
      * @var string
@@ -34,7 +34,7 @@ class AmoOauth {
      * Variable for storing the config
      * @var array
      */
-    protected $configJSON = [
+    public $configJSON = [
         "access_token" => "",
         "refresh_token" => "",
         "expires_in" => 0,
@@ -69,7 +69,7 @@ class AmoOauth {
      * Full path with protocol, subdomain and domain
      * @var string
      */
-    protected $apiUri;
+    public $apiUri;
 
     /**
      * @var AmoHttpClient

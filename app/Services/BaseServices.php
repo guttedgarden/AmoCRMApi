@@ -7,6 +7,5 @@ use App\Constants\UriConstants;
 
 class BaseServices{
     protected $httpClient;
-
     protected $headers = UriConstants::HEADERS_TOKEN;
 }

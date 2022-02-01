@@ -72,8 +72,8 @@ try{
 ```
 ### Get lead by id
 ```php
-try{
-    $lead = $client->leads()->getById(id);
+try {
+    $lead = $client->leads()->create()->getById(28643682);
     print_r($lead);
 } catch (Exception $exception){
     echo $exception;
@@ -82,37 +82,36 @@ try{
 ### Create new lead
 ```php
 try{
-    $lead = new Lead();
-    $lead->name = "testAmoAPI";
-    $lead->price = 123;
-    $lead = $client->leads()->save($lead->getFields());
-    print_r($lead);
+    $lead = $client->leads()->create();
+    $lead->name = "APVTestNew32";
+    $lead->price = 321;
+    print_r($lead->save());
 } catch (Exception $exception){
     echo $exception;
 }
 ```
 ### Update lead
 ```php
-try{
-    $lead = new Lead();
-    $lead->id = 28636104;
-    $lead->name = "testAPVA1pi123";
+try {
+    $lead = $client->leads()->create();
+    $lead->id = 28643682;
+    $lead->name = "APVTestUpdate32";
     $lead->price = 123;
-    $lead = $client->leads()->save($lead->getFields());
-    print_r($lead);
+    print_r($lead->update());
 } catch (Exception $exception){
     echo $exception;
 }
+
 ```
 
 ### Add note to lead
 ```php
-try{
+try {
+    $lead = $client->leads()->create()->getById(28643682);
     $note = new Note();
     $note->note_type = NoteConstants::NOTE_TYPE_COMMON;
-    $note->text = "TestNoteAPV";
-    $note = $client->leads()->addNoteById(28641946, $note->getFields());
-    print_r($note);
+    $note->text = "New test note";
+    print_r($lead->addNote($note->getFields()));
 } catch (Exception $exception){
     echo $exception;
 }
@@ -131,19 +130,19 @@ try{
 ```
 ### Get contact by id
 ```php
-try{
-    $contact = $client->contacts()->getById(46014081);
-    print_r($contact);
+try {
+    $contact = $client->contacts()->create()->getById(46050921);
+    print_r($contact->getFieldsAsArray());
 } catch (Exception $exception){
-
+    echo $exception;
 }
 ```
 ### Create new contact
 ```php
 try{
-    $contact = new Contact();
-    $contact->name = "Test Contact APV";
-    print_r($client->contacts()->save($contact->getFields()));
+    $contact = $client->contacts()->create();
+    $contact->name = "APVTestNewContact";
+    print_r($contact->save());
 } catch (Exception $exception){
     echo $exception;
 }
@@ -151,23 +150,22 @@ try{
 ### Update contact
 ```php
 try {
-    $contact = new Contact();
-    $contact->id = 46046788;
-    $contact->name = "UpdateAPVApi";
-    $contact = $client->contacts()->update($contact->getFields());
-    print_r($contact);
+    $contact = $client->contacts()->create();
+    $contact->id = 46050921;
+    $contact->name = "APVTestNewContactUpdate";
+    print_r($contact->update());
 } catch (Exception $exception){
     echo $exception;
 }
 ```
 ### Add note to contact
 ```php
-try{
+try {
+    $contact = $client->contacts()->create()->getById(46050921);
     $note = new Note();
     $note->note_type = NoteConstants::NOTE_TYPE_COMMON;
-    $note->text = "TestContactNote";
-    $note = $client->contacts()->addNoteById(46046788, $note->getFields());
-    print_r($note);
+    $note->text = "New test note to Contact";
+    print_r($contact->addNote($note->getFields()));
 } catch (Exception $exception){
     echo $exception;
 }
@@ -185,9 +183,9 @@ try{
 ```
 ### Get company by id
 ```php
-try{
-    $company = $client->company()->getById(46001739);
-    print_r($company);
+try {
+    $company = $client->company()->create()->getById(46050853);
+    print_r($company->getFieldsAsArray());
 } catch (Exception $exception){
     echo $exception;
 }
@@ -195,33 +193,32 @@ try{
 ### Create new company
 ```php
 try{
-    $company = new Company();
-    $company->name = "Test Company APV";
-    print_r($client->company()->save($company->getFields()));
+    $company = $client->company()->create();
+    $company->name = "APVTestNewCompany";
+    print_r($company->save());
 } catch (Exception $exception){
     echo $exception;
 }
 ```
 ### Update company
 ```php
-try{
-    $company = new Company();
-    $company->id = 46047244;
-    $company->name = "Test Company APVUpdate12";
-    $company = $client->company()->update($company->getFields());
-    print_r($company);
+try {
+    $company = $client->company()->create();
+    $company->id = 46050853;
+    $company->name = "APVTestNewCompanyUpdate";
+    print_r($company->update());
 } catch (Exception $exception){
     echo $exception;
 }
 ```
 ### Add note to company
 ```php
-try{
-    $company = new Company();
-    $company->note_type = NoteConstants::NOTE_TYPE_COMMON;
-    $company->text = "TestCompanyNoteAPV";
-    $company = $client->company()->addNoteById(46047268, $company->getFields());
-    print_r($company);
+try {
+    $company = $client->company()->create()->getById(46050853);
+    $note = new Note();
+    $note->note_type = NoteConstants::NOTE_TYPE_COMMON;
+    $note->text = "New test note to Company";
+    print_r($company->addNote($note->getFields()));
 } catch (Exception $exception){
     echo $exception;
 }

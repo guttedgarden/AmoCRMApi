@@ -8,4 +8,5 @@ interface ModelInterface
     public function update();
     public function getById($id);
     public function addNote($note);
+    public function getFieldsAsArray();
 }

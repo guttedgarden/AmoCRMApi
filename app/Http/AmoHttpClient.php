@@ -9,6 +9,11 @@ use Psr\Http\Message\ResponseInterface;
 
 class AmoHttpClient{
 
+    /**
+     * Guzzle client
+     *
+     * @var Client
+     */
     private $httpClient;
 
     /** AmoHttpClient Class constructor
@@ -26,9 +31,8 @@ class AmoHttpClient{
     }
 
     //Function for submitting a request and receiving a response
-    public function request($method, $uri, array $jsonBody, array $headers){
-//        print_r($headers);
-//        die();
+    public function request($method, $uri, array $jsonBody, array $headers)
+    {
         try {
             $response = $this->httpClient->request($method, $uri, [
                 //Headers array containing User-Agent and Content-Type
@@ -37,14 +41,15 @@ class AmoHttpClient{
             ]);
             //Response parsing
             $response = $this->responseParse($response);
-        } catch (Exception $e){
-
+        } catch (\Exception $exception){
+            echo $exception;
         }
 
         return $response;
     }
 
-    private function responseParse (ResponseInterface $response){
+    private function responseParse (ResponseInterface $response)
+    {
         $body = $response->getBody();
         $decodeBody = json_decode($body, true);
 

@@ -86,6 +86,7 @@ class TaskModel implements ModelInterface {
      *
      * @param int $id
      * @return $this
+     * @throws Exception
      */
     public function getById(int $id): TaskModel
     {
@@ -101,13 +102,13 @@ class TaskModel implements ModelInterface {
     /**
      * Adds a note to an existing task
      *
-     * @param array $note
+     * @param NoteModel $note
      * @return TaskModel
      */
-    public function addNote(NoteModel $note)
+    public function addNote(NoteModel $note): TaskModel
     {
         // TODO: Implement addNote() method.
-        $note = $note->getFields();
+        return $note->getFields();
     }
 
     /**

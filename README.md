@@ -3,8 +3,8 @@ This package implements an API client with support for basic entities and author
 ____
 ## Table of contents
 - [Tokens](#tokens)
-  + [Getting a token is done in the following way](#getting-a-token-is-done-in-the-following-way)
-  + [Getting access_token and refresh_token is done using this code](#getting-access_token-and-refresh_token-is-done-using-this-code)
+  + [Creating a new client](#creating-a-new-client)
+  + [Getting token](#getting-token)
 - [Leads](#leads)
   + [Get all leads](#get-all-leads)
   + [Get lead by id](#get-lead-by-id)
@@ -54,7 +54,7 @@ JSON file with tokens is stored in the location specified by the user. The JSON 
 }
 ```
 
-### Getting a token is done in the following way
+### Creating a new client
 ```php
 use App\Client\AmoApiClient;
 
@@ -66,7 +66,7 @@ $client = new AmoApiClient(
     $redirect_uri,
     $pathToConfig);
 ```
-### Getting access_token and refresh_token is done using this code
+### Getting token
 ```php
 try {
     $tokens = $client->getToken();

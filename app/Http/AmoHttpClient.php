@@ -30,7 +30,16 @@ class AmoHttpClient{
         ]);
     }
 
-    //Function for submitting a request and receiving a response
+    /**
+     * Function for submitting a request and receiving a response
+     *
+     * @param $method
+     * @param $uri
+     * @param array $jsonBody
+     * @param array $headers
+     * @return array|mixed|ResponseInterface
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
     public function request($method, $uri, array $jsonBody, array $headers)
     {
         try {
@@ -48,6 +57,10 @@ class AmoHttpClient{
         return $response;
     }
 
+    /**
+     * @param ResponseInterface $response
+     * @return array|mixed
+     */
     private function responseParse (ResponseInterface $response)
     {
         $body = $response->getBody();

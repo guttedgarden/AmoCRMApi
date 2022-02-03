@@ -4,6 +4,7 @@ namespace App\Oauth;
 
 use App\Http\AmoHttpClient;
 use App\Constants\UriConstants;
+use Exception;
 
 class AmoOauth {
 
@@ -181,7 +182,7 @@ class AmoOauth {
     }
 
     /**
-     * @param bool $tokenType If true, refresh_token || if false, authorization_code
+     * @param bool $tokenType If true, "refresh_token" || if false, "authorization_code"
      * @return array
      */
     private function requestJson(bool $tokenType): array

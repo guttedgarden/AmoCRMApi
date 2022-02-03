@@ -100,7 +100,7 @@ class CompanyModel implements ModelInterface {
     /**
      * Adds a note to an existing company
      *
-     * @param array $note
+     * @param NoteModel $note
      * @return $this
      * @throws Exception
      */

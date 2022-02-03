@@ -101,7 +101,7 @@ class CustomerModel implements ModelInterface{
     /**
      * Adds a note to an existing customer
      *
-     * @param array $note
+     * @param NoteModel $note
      * @return $this
      * @throws Exception
      */

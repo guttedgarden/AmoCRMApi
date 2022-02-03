@@ -1,5 +1,7 @@
 <?php
 namespace App\Interfaces;
+use App\Model\NoteModel;
+
 interface ModelInterface
 {
     /**
@@ -43,7 +45,7 @@ interface ModelInterface
      * @param array $note
      * @return mixed
      */
-    public function addNote(array $note);
+    public function addNote(NoteModel $note);
 
     /**
      * Returns an array of CompanyModel|ContactModel|LeadModel fields

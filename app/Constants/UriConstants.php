@@ -23,4 +23,8 @@ class UriConstants{
     public const TASK_URI = "/api/v4/tasks";
 
     public const CUSTOMER_URI = "/api/v4/customers";
+
+    public const USER_URI = "/api/v4/users";
+
+    public const ROLE_URI = "/api/v4/roles";
 }

@@ -6,14 +6,15 @@ use App\Constants\UriConstants;
 use App\Interfaces\ModelInterface;
 use Exception;
 
-class CompanyModel implements ModelInterface {
+class TaskModel implements ModelInterface {
 
-    private $fields;
+
     private $httpClient;
     private $headers;
+    private $fields;
 
     /**
-     * CompanyModel Class constructor
+     * TaskModel Class constructor
      *
      * @param $httpClient
      * @param $headers
@@ -23,7 +24,6 @@ class CompanyModel implements ModelInterface {
         $this->httpClient = $httpClient;
         $this->headers = $headers;
     }
-
 
     /**
      * @param $key
@@ -46,51 +46,52 @@ class CompanyModel implements ModelInterface {
         return $this->fields[$key] = $value;
     }
 
-    /**
-     * Saving, creating and sending a company to AmoCRM
-     * @return $this
-     * @throws Exception
-     */
-    public function save(): CompanyModel
-    {
-        // TODO: Implement save() method.
-        if (!empty($this->fields["name"])){
-            $this->fields = $this->httpClient->request("POST",UriConstants::COMPANY_URI, [$this->fields], $this->headers);
-        } else {
-            throw new Exception("The field \"name\" cannot be empty for the company");
-        }
-        return $this;
-    }
 
     /**
-     * Saving and updating the company from AmoCRM
+     * Saving, creating and sending a TaskModel to AmoCRM
      *
      * @return $this
      * @throws Exception
      */
-    public function update(): CompanyModel
+    public function save(): TaskModel
     {
-        // TODO: Implement update() method.
-        if (!empty($this->fields["id"])){
-            $this->fields = $this->httpClient->request("PATCH", UriConstants::COMPANY_URI . "/" . $this->fields["id"], $this->fields, $this->headers);
+        // TODO: Implement save() method.
+        if (!empty($this->fields["text"]) || !empty($this->fields["complete_till"])) {
+            $this->fields = $this->httpClient->request("POST",UriConstants::TASK_URI, [$this->fields], $this->headers);
         } else {
-            throw new Exception("The field \"id\" cannot be empty for the company");
+            throw new Exception("The \"name\" or \"price\" of the transaction cannot be empty");
         }
         return $this;
     }
 
     /**
-     * Getting a company from AmoCRM by ID
+     * Saving and updating the task from AmoCRM
+     *
+     * @return $this
+     * @throws Exception
+     */
+    public function update(): TaskModel
+    {
+        // TODO: Implement update() method.
+        if(!empty($this->fields["id"])){
+            $this->fields = $this->httpClient->request("PATCH", UriConstants::TASK_URI . "/" . $this->fields["id"], $this->fields, $this->headers);
+        } else {
+            throw new Exception("The \"name\" or \"price\" of the transaction cannot be empty");
+        }
+        return $this;
+    }
+
+    /**
+     * Getting a task from AmoCRM by ID
      *
      * @param int $id
      * @return $this
-     * @throws Exception
      */
-    public function getById(int $id): CompanyModel
+    public function getById(int $id): TaskModel
     {
         // TODO: Implement getById() method.
         if($id > 0){
-            $this->fields = $this->httpClient->request("GET",UriConstants::COMPANY_URI . "/" . $id, [], $this->headers);
+            $this->fields = $this->httpClient->request("GET",UriConstants::TASK_URI . "/" . $id, [], $this->headers);
         } else {
             throw new Exception("The \"id\" field cannot be a negative number!");
         }
@@ -98,26 +99,19 @@ class CompanyModel implements ModelInterface {
     }
 
     /**
-     * Adds a note to an existing company
+     * Adds a note to an existing task
      *
      * @param array $note
-     * @return $this
-     * @throws Exception
+     * @return TaskModel
      */
-    public function addNote(NoteModel $note): CompanyModel
+    public function addNote(NoteModel $note)
     {
         // TODO: Implement addNote() method.
         $note = $note->getFields();
-        if (!empty($this->fields["id"]) || !empty($note["note_type"]) || !empty($note["text"])) {
-            $this->fields = $this->httpClient->request("POST", UriConstants::COMPANY_URI . '/' . $this->fields["id"] . '/notes', [$note], $this->headers);
-        } else {
-            throw new Exception("The \"id\", \"note_type\", \"text\" field cannot be empty for a company");
-        }
-        return $this;
     }
 
     /**
-     * Returns an array of company fields
+     * Returns an array of task fields
      *
      * @return mixed
      */
@@ -126,4 +120,5 @@ class CompanyModel implements ModelInterface {
         // TODO: Implement getFieldsAsArray() method.
         return $this->fields;
     }
+
 }

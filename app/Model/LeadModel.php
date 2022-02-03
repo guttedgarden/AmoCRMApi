@@ -88,10 +88,10 @@ class LeadModel implements ModelInterface {
      */
     public function getById(int $id): LeadModel
     {
-        if (!empty($id)){
+        if($id > 0){
             $this->fields = $this->httpClient->request("GET",UriConstants::LEAD_URI_V4 . "/" . $id, [], $this->headers);
         } else {
-            throw new Exception("The \"id\" of the transaction cannot be empty");
+            throw new Exception("The \"id\" field cannot be a negative number!");
         }
         return $this;
     }
@@ -103,8 +103,9 @@ class LeadModel implements ModelInterface {
      * @return $this
      * @throws Exception
      */
-    public function addNote(array $note):LeadModel
+    public function addNote(NoteModel $note):LeadModel
     {
+        $note = $note->getFields();
         if (!empty($this->fields["id"]) || !empty($note["note_type"]) || !empty($note["text"])) {
             $this->fields = $this->httpClient->request("POST", UriConstants::LEAD_URI_V4 . '/' . $this->fields["id"] . '/notes', [$note], $this->headers);
         }
@@ -125,10 +126,10 @@ class LeadModel implements ModelInterface {
         return $this->fields;
     }
 
-    public function addContact($contact): LeadModel
+    public function addContact(ContactModel $contact): LeadModel
     {
-//        $embedded["contact"] = $contact;
-//        return $this->fields + $embedded;
+        $contact = $contact->getFieldsAsArray();
+        $this->fields["_embedded"]["tags"] = [];
         if (!empty($contact["id"])){
             $this->fields["_embedded"]["contact"]["id"] = $contact["id"];
             $this->fields["_embedded"]["contact"]["request_id"] = 0;

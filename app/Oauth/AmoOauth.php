@@ -125,7 +125,7 @@ class AmoOauth {
      * Function for getting a token by authorization code
      * @return array
      */
-    public function getTokenByAuthCode(): array
+    private function getTokenByAuthCode(): array
     {
         try {
             $responseJson = $this->httpClient->request("POST",UriConstants::OAUTH_URI,
@@ -147,7 +147,7 @@ class AmoOauth {
      * Function for getting a token by refresh code
      * @return array
      */
-    public function getTokenByRefreshCode(): array
+    private function getTokenByRefreshCode(): array
     {
         try {
             $responseJson = $this->httpClient->request("POST",UriConstants::OAUTH_URI,
@@ -184,7 +184,7 @@ class AmoOauth {
      * @param bool $tokenType If true, refresh_token || if false, authorization_code
      * @return array
      */
-    public function requestJson(bool $tokenType): array
+    private function requestJson(bool $tokenType): array
     {
         return [
             "client_id" => $this->client_id,

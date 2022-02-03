@@ -90,10 +90,10 @@ class CustomerModel implements ModelInterface{
     public function getById(int $id): CustomerModel
     {
         // TODO: Implement getById() method.
-        if (!empty($id)){
+        if($id > 0){
             $this->fields = $this->httpClient->request("GET",UriConstants::CUSTOMER_URI . "/" . $id, [], $this->headers);
         } else{
-            throw new Exception("The \"id\" field cannot be empty for a contact");
+            throw new Exception("The \"id\" field cannot be a negative number!");
         }
         return $this;
     }
@@ -105,8 +105,9 @@ class CustomerModel implements ModelInterface{
      * @return $this
      * @throws Exception
      */
-    public function addNote(array $note): CustomerModel
+    public function addNote(NoteModel $note): CustomerModel
     {
+        $note = $note->getFields();
         // TODO: Implement addNote() method.
         if (!empty($this->fields["id"]) || !empty($note["note_type"]) || !empty($note["text"])) {
             $this->fields = $this->httpClient->request("POST", UriConstants::CUSTOMER_URI . '/' . $this->fields["id"] . '/notes', [$note], $this->headers);

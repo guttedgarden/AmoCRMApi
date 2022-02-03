@@ -89,10 +89,10 @@ class ContactModel implements ModelInterface {
     public function getById(int $id): ContactModel
     {
         // TODO: Implement getById() method.
-        if (!empty($id)){
+        if($id > 0){
             $this->fields = $this->httpClient->request("GET",UriConstants::CONTACT_URI_V4 . "/" . $id, [], $this->headers);
         } else{
-            throw new Exception("The \"id\" field cannot be empty for a contact");
+            throw new Exception("The \"id\" field cannot be a negative number!");
         }
         return $this;
     }
@@ -100,13 +100,14 @@ class ContactModel implements ModelInterface {
     /**
      * Adds a note to an existing contact
      *
-     * @param array $note
+     * @param NoteModel $note
      * @return $this
      * @throws Exception
      */
-    public function addNote(array $note): ContactModel
+    public function addNote(NoteModel $note): ContactModel
     {
         // TODO: Implement addNote() method.
+        $note = $note->getFields();
         if (!empty($this->fields["id"]) || !empty($note["note_type"]) || !empty($note["text"])) {
             $this->fields = $this->httpClient->request("POST", UriConstants::CONTACT_URI_V4 . '/' . $this->fields["id"] . '/notes', [$note], $this->headers);
         } else {

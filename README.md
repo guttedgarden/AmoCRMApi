@@ -17,23 +17,29 @@ ____
   + [Create new contact](#create-new-contact)
   + [Update contact](#update-contact)
   + [Add note to contact](#add-note-to-contact)
-- [Company]($company)
+- [Company](#company)
   + [Get all companys](#get-all-companys)
   + [Get company by id](#get-company-by-id)
   + [Create new company](#create-new-company)
   + [Update company](#update-company)
   + [Add note to company](#add-note-to-company)
-- [Customer]($customer)
-  + [Get all customer](#get-all-customer)
+- [Customer](#customer)
+  + [Get all customer](#get-all-customers)
   + [Get customer by id](#get-customer-by-id)
   + [Create new customer](#create-new-customer)
   + [Update customer](#update-customer)
   + [Add note to customer](#add-note-to-customer)
-- [Task]($task)
+- [Task](#task)
   + [Get all task](#get-all-task)
   + [Get task by id](#get-task-by-id)
   + [Create new task](#create-new-task)
   + [Update task](#update-task)
+- [Users](#users)
+  + [Get all users](#get-all-users)
+  + [Get all roles](#get-all-roles)
+  + [Get user by id](#get-user-by-id)
+  + [Get role by id](#get-role-by-id)
+
 ____
 ## Examples
 ### Tokens
@@ -121,7 +127,7 @@ try {
     $note = new Note();
     $note->note_type = NoteConstants::NOTE_TYPE_COMMON;
     $note->text = "New test note";
-    print_r($lead->addNote($note->getFields()));
+    print_r($lead->addNote($note));
 } catch (Exception $exception){
     echo $exception;
 }
@@ -175,7 +181,7 @@ try {
     $note = new Note();
     $note->note_type = NoteConstants::NOTE_TYPE_COMMON;
     $note->text = "New test note to ContactModel";
-    print_r($contact->addNote($note->getFields()));
+    print_r($contact->addNote($note));
 } catch (Exception $exception){
     echo $exception;
 }
@@ -228,7 +234,7 @@ try {
     $note = new Note();
     $note->note_type = NoteConstants::NOTE_TYPE_COMMON;
     $note->text = "New test note to CompanyModel";
-    print_r($company->addNote($note->getFields()));
+    print_r($company->addNote($note));
 } catch (Exception $exception){
     echo $exception;
 }
@@ -257,7 +263,7 @@ try {
 try{
     $customer = $client->customers()->create();
     $customer->name = "APVTestCustomer";
-    print_r($customer->save()->getFieldsAsArray());
+    print_r($customer->save());
 } catch (Exception $exception){
     echo $exception;
 }
@@ -268,7 +274,7 @@ try {
     $customer = $client->customers()->create();
     $customer->id = 187447;
     $customer->name = "APVTestCustomerUpdate";
-    print_r($customer->update()->getFieldsAsArray());
+    print_r($customer->update());
 } catch (Exception $exception){
     echo $exception;
 }
@@ -280,7 +286,7 @@ try {
     $note = new Note();
     $note->note_type = NoteConstants::NOTE_TYPE_COMMON;
     $note->text = "New test note to CustomerModel";
-    print_r($customer->addNote($note->getFields()));
+    print_r($customer->addNote($note));
 } catch (Exception $exception){
     echo $exception;
 }
@@ -301,7 +307,7 @@ echo $exception;
 ```php
 try {
     $task = $client->task()->create()->getById(46510275);
-    print_r($task->getFieldsAsArray());
+    print_r($task);
 } catch (Exception $exception){
     echo $exception;
 }
@@ -316,7 +322,7 @@ try{
     $task->entity_id = 28643682;
     $task->entity_type = "leads";
     $task->complete_till = time() + 3600;
-    print_r($task->save()->getFieldsAsArray());
+    print_r($task->save());
 } catch (Exception $exception){
     echo $exception;
 }
@@ -328,8 +334,50 @@ try {
     $task = $client->task()->create()->getById(50989199);
     $task->task_type_id = TaskConstants::TASK_TYPE_MEETING;
     $task->text = "Update task for 28643682";
-    print_r($task->update()->getFieldsAsArray());
+    print_r($task->update());
 } catch (Exception $exception){
     echo $exception;
 }
+```
+
+____
+## Users
+### Get all users
+```php
+try{
+    $user = $client->users()->getAllUsers([]);
+    print_r($user);
+} catch (Exception $exception){
+    echo $exception;
+}
+```
+### Get all roles
+```php
+try{
+    $user = $client->users()->getAllRoles([]);
+    print_r($user);
+} catch (Exception $exception){
+    echo $exception;
+}
+
+```
+### Get user by id
+```php
+try{
+    $user = $client->users()->create()->getUserById(123);
+    print_r($user);
+} catch (Exception $exception){
+    echo $exception;
+}
+
+```
+### Get role by id
+```php
+try{
+    $user = $client->users()->create()->getRoleById(123);
+    print_r($user);
+} catch (Exception $exception){
+    echo $exception;
+}
+
 ```

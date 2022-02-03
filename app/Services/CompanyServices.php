@@ -5,7 +5,7 @@ namespace App\Services;
 use App\Constants\UriConstants;
 use App\Http\AmoHttpClient;
 use App\Interfaces\ServicesInterface;
-use App\Model\Company;
+use App\Model\CompanyModel;
 
 class CompanyServices extends BaseServices implements ServicesInterface{
 
@@ -35,13 +35,13 @@ class CompanyServices extends BaseServices implements ServicesInterface{
 
 
     /**
-     * Creates a new instance of the Company class
+     * Creates a new instance of the CompanyModel class
      *
-     * @return Company
+     * @return CompanyModel
      */
-    public function create(): Company
+    public function create(): CompanyModel
     {
         // TODO: Implement create() method.
-        return new Company($this->httpClient, $this->headers);
+        return new CompanyModel($this->httpClient, $this->headers);
     }
 }

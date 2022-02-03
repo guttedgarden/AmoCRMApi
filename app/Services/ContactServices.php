@@ -5,7 +5,7 @@ namespace App\Services;
 use App\Http\AmoHttpClient;
 use App\Constants\UriConstants;
 use App\Interfaces\ServicesInterface;
-use App\Model\Contact;
+use App\Model\ContactModel;
 
 class ContactServices extends BaseServices implements ServicesInterface{
 
@@ -39,13 +39,13 @@ class ContactServices extends BaseServices implements ServicesInterface{
 
 
     /**
-     * Creates a new instance of the Contact class
+     * Creates a new instance of the ContactModel class
      *
-     * @return Contact
+     * @return ContactModel
      */
-    public function create(): Contact
+    public function create(): ContactModel
     {
         // TODO: Implement create() method.
-        return new Contact($this->httpClient, $this->headers);
+        return new ContactModel($this->httpClient, $this->headers);
     }
 }

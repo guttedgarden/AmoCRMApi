@@ -2,15 +2,16 @@
 
 namespace App\Services;
 
-use App\Http\AmoHttpClient;
-use App\Model\LeadModel;
 use App\Constants\UriConstants;
+use App\Http\AmoHttpClient;
 use App\Interfaces\ServicesInterface;
+use App\Model\CustomerModel;
 
-class LeadServices extends BaseServices implements ServicesInterface {
+class CustomerServices extends BaseServices implements ServicesInterface{
+
 
     /**
-     * LeadServices Class constructor
+     * CustomerServices Class constructor
      *
      * @param string $uri
      * @param string $accessToken
@@ -22,7 +23,7 @@ class LeadServices extends BaseServices implements ServicesInterface {
     }
 
     /**
-     * Returns all leads as array
+     * Returns all customers as array
      *
      * @param array $filter
      * @return array
@@ -30,19 +31,20 @@ class LeadServices extends BaseServices implements ServicesInterface {
     public function getAll(array $filter): array
     {
         // TODO: Implement getAll() method.
-        if (trim(empty($filter))) {
+        if(trim(empty($filter))){
             $filter = [];
         }
-        return $this->httpClient->request("GET",UriConstants::LEAD_URI_V2, $filter, $this->headers);
+        return $this->httpClient->request("GET", UriConstants::CUSTOMER_URI, $filter, $this->headers);
     }
 
     /**
-     * Creates a new instance of the LeadModel class
+     * Creates a new instance of the CustomerModel class
      *
-     * @return LeadModel
+     * @return CustomerModel
      */
-    public function create(): LeadModel
+    public function create(): CustomerModel
     {
-        return new LeadModel($this->httpClient, $this->headers);
+        // TODO: Implement create() method.
+        return new CustomerModel($this->httpClient, $this->headers);
     }
 }

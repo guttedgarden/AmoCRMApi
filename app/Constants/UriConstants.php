@@ -19,4 +19,8 @@ class UriConstants{
     public const CONTACT_URI_V2 = "/api/v2/contacts";
 
     public const COMPANY_URI = "/api/v4/companies";
+
+    public const TASK_URI = "/api/v4/tasks";
+
+    public const CUSTOMER_URI = "/api/v4/customers";
 }

@@ -6,7 +6,7 @@ use App\Constants\UriConstants;
 use App\Interfaces\ModelInterface;
 use Exception;
 
-class Lead implements ModelInterface {
+class LeadModel implements ModelInterface {
 
     private $fields;
     private $httpClient;
@@ -14,7 +14,7 @@ class Lead implements ModelInterface {
 
 
     /**
-     * Lead Class constructor
+     * LeadModel Class constructor
      *
      * @param $httpClient
      * @param $headers
@@ -22,7 +22,6 @@ class Lead implements ModelInterface {
     public function __construct($httpClient, $headers)
     {
         $this->httpClient = $httpClient;
-        //$this->headers = ['Authorization: Bearer ' . $accessToken];
         $this->headers = $headers;
     }
 
@@ -53,7 +52,7 @@ class Lead implements ModelInterface {
      * @return $this
      * @throws Exception
      */
-    public function save(): Lead
+    public function save(): LeadModel
     {
         if (!empty($this->fields["name"]) || !empty($this->fields["price"])) {
             $this->fields = $this->httpClient->request("POST",UriConstants::LEAD_URI_V4, [$this->fields], $this->headers);
@@ -70,7 +69,7 @@ class Lead implements ModelInterface {
      * @return $this
      * @throws Exception
      */
-    public function update(): Lead
+    public function update(): LeadModel
     {
         if (!empty($this->fields["id"])) {
             $this->fields = $this->httpClient->request("PATCH", UriConstants::LEAD_URI_V4 . "/" . $this->fields["id"], $this->fields, $this->headers);
@@ -87,7 +86,7 @@ class Lead implements ModelInterface {
      * @return $this
      * @throws Exception
      */
-    public function getById(int $id): Lead
+    public function getById(int $id): LeadModel
     {
         if (!empty($id)){
             $this->fields = $this->httpClient->request("GET",UriConstants::LEAD_URI_V4 . "/" . $id, [], $this->headers);
@@ -104,7 +103,7 @@ class Lead implements ModelInterface {
      * @return $this
      * @throws Exception
      */
-    public function addNote(array $note):Lead
+    public function addNote(array $note):LeadModel
     {
         if (!empty($this->fields["id"]) || !empty($note["note_type"]) || !empty($note["text"])) {
             $this->fields = $this->httpClient->request("POST", UriConstants::LEAD_URI_V4 . '/' . $this->fields["id"] . '/notes', [$note], $this->headers);
@@ -124,5 +123,19 @@ class Lead implements ModelInterface {
     {
         // TODO: Implement getFieldsAsArray() method.
         return $this->fields;
+    }
+
+    public function addContact($contact): LeadModel
+    {
+//        $embedded["contact"] = $contact;
+//        return $this->fields + $embedded;
+        if (!empty($contact["id"])){
+            $this->fields["_embedded"]["contact"]["id"] = $contact["id"];
+            $this->fields["_embedded"]["contact"]["request_id"] = 0;
+            $this->fields["_embedded"]["contact"]["_links"] = $contact["_links"];
+        } else {
+            $this->fields["_embedded"]["contact"] = $contact;
+        }
+        return $this;
     }
 }

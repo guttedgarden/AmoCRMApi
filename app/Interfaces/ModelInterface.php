@@ -16,21 +16,21 @@ interface ModelInterface
     public function __set($key, $value);
 
     /**
-     * Saving, creating and sending a Company|Contact|Lead to AmoCRM
+     * Saving, creating and sending a CompanyModel|ContactModel|LeadModel to AmoCRM
      *
      * @return mixed
      */
     public function save();
 
     /**
-     * Saving and updating the Company|Contact|Lead from AmoCRM
+     * Saving and updating the CompanyModel|ContactModel|LeadModel from AmoCRM
      *
      * @return mixed
      */
     public function update();
 
     /**
-     * Getting a Company|Contact|Lead from AmoCRM by ID
+     * Getting a CompanyModel|ContactModel|LeadModel from AmoCRM by ID
      *
      * @param int $id
      * @return mixed
@@ -38,7 +38,7 @@ interface ModelInterface
     public function getById(int $id);
 
     /**
-     * Adds a note to an existing Company|Contact|Lead
+     * Adds a note to an existing CompanyModel|ContactModel|LeadModel
      *
      * @param array $note
      * @return mixed
@@ -46,7 +46,7 @@ interface ModelInterface
     public function addNote(array $note);
 
     /**
-     * Returns an array of Company|Contact|Lead fields
+     * Returns an array of CompanyModel|ContactModel|LeadModel fields
      *
      * @return mixed
      */

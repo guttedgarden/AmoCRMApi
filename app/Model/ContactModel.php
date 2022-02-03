@@ -6,14 +6,14 @@ use App\Constants\UriConstants;
 use App\Interfaces\ModelInterface;
 use Exception;
 
-class Contact implements ModelInterface {
+class ContactModel implements ModelInterface {
 
     private $fields;
     private $httpClient;
     private $headers;
 
     /**
-     * Contact Class constructor
+     * ContactModel Class constructor
      *
      * @param $httpClient
      * @param $headers
@@ -51,7 +51,7 @@ class Contact implements ModelInterface {
      * @return $this
      * @throws Exception
      */
-    public function save(): Contact
+    public function save(): ContactModel
     {
         // TODO: Implement save() method.
         if (!empty($this->fields["name"])){
@@ -68,7 +68,7 @@ class Contact implements ModelInterface {
      * @return $this
      * @throws Exception
      */
-    public function update(): Contact
+    public function update(): ContactModel
     {
         // TODO: Implement update() method.
         if (!empty($this->fields["id"])){
@@ -86,7 +86,7 @@ class Contact implements ModelInterface {
      * @return $this
      * @throws Exception
      */
-    public function getById(int $id): Contact
+    public function getById(int $id): ContactModel
     {
         // TODO: Implement getById() method.
         if (!empty($id)){
@@ -104,7 +104,7 @@ class Contact implements ModelInterface {
      * @return $this
      * @throws Exception
      */
-    public function addNote(array $note): Contact
+    public function addNote(array $note): ContactModel
     {
         // TODO: Implement addNote() method.
         if (!empty($this->fields["id"]) || !empty($note["note_type"]) || !empty($note["text"])) {

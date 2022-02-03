@@ -3,7 +3,7 @@ namespace App\Interfaces;
 interface ServicesInterface
 {
     /**
-     * Returns all Company's|Contact's|Lead's as array
+     * Returns all CompanyModel's|ContactModel's|LeadModel's as array
      *
      * @param array $filter
      * @return mixed
@@ -11,7 +11,7 @@ interface ServicesInterface
     public function getAll(array $filter);
 
     /**
-     * Creates a new instance of the Company|Contact|Lead class
+     * Creates a new instance of the CompanyModel|ContactModel|LeadModel class
      *
      * @return mixed
      */

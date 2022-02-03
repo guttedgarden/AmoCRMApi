@@ -1,5 +1,5 @@
 # API client for amoCRM
-This package implements an API client with support for basic entities and authorization via the OAuth 2.0 protocol in amoCRM. PHP version no lower than 7.4 is required to work.
+This package implements an API client with support for basic entities and authorization via the OAuth 2.0 protocol in amoCRM. PHP version no lower than 7.1 is required to work.
 ____
 ## Table of contents
 - [Tokens](#tokens)
@@ -23,7 +23,17 @@ ____
   + [Create new company](#create-new-company)
   + [Update company](#update-company)
   + [Add note to company](#add-note-to-company)
-
+- [Customer]($customer)
+  + [Get all customer](#get-all-customer)
+  + [Get customer by id](#get-customer-by-id)
+  + [Create new customer](#create-new-customer)
+  + [Update customer](#update-customer)
+  + [Add note to customer](#add-note-to-customer)
+- [Task]($task)
+  + [Get all task](#get-all-task)
+  + [Get task by id](#get-task-by-id)
+  + [Create new task](#create-new-task)
+  + [Update task](#update-task)
 ____
 ## Examples
 ### Tokens
@@ -164,7 +174,7 @@ try {
     $contact = $client->contacts()->create()->getById(46050921);
     $note = new Note();
     $note->note_type = NoteConstants::NOTE_TYPE_COMMON;
-    $note->text = "New test note to Contact";
+    $note->text = "New test note to ContactModel";
     print_r($contact->addNote($note->getFields()));
 } catch (Exception $exception){
     echo $exception;
@@ -217,8 +227,108 @@ try {
     $company = $client->company()->create()->getById(46050853);
     $note = new Note();
     $note->note_type = NoteConstants::NOTE_TYPE_COMMON;
-    $note->text = "New test note to Company";
+    $note->text = "New test note to CompanyModel";
     print_r($company->addNote($note->getFields()));
+} catch (Exception $exception){
+    echo $exception;
+}
+```
+## Customer
+### Get all customers
+```php
+try{
+    $customer = $client->customers();
+    print_r($customer->getAll([]));
+}catch (Exception $exception){
+    echo $exception;
+}
+```
+### Get customer by id
+```php
+try {
+    $customer = $client->customers()->create()->getById(183665);
+    print_r($customer->getFieldsAsArray());
+} catch (Exception $exception){
+    echo $exception;
+}
+```
+### Create new customer
+```php
+try{
+    $customer = $client->customers()->create();
+    $customer->name = "APVTestCustomer";
+    print_r($customer->save()->getFieldsAsArray());
+} catch (Exception $exception){
+    echo $exception;
+}
+```
+### Update customer
+```php
+try {
+    $customer = $client->customers()->create();
+    $customer->id = 187447;
+    $customer->name = "APVTestCustomerUpdate";
+    print_r($customer->update()->getFieldsAsArray());
+} catch (Exception $exception){
+    echo $exception;
+}
+```
+### Add note to customer
+```php
+try {
+    $customer = $client->customers()->create()->getById(187447);
+    $note = new Note();
+    $note->note_type = NoteConstants::NOTE_TYPE_COMMON;
+    $note->text = "New test note to CustomerModel";
+    print_r($customer->addNote($note->getFields()));
+} catch (Exception $exception){
+    echo $exception;
+}
+
+```
+____
+## Task
+### Get all Task
+```php
+try{
+$task = $client->task();
+print_r($task->getAll([]));
+}catch (Exception $exception){
+echo $exception;
+}
+```
+### Get task by id
+```php
+try {
+    $task = $client->task()->create()->getById(46510275);
+    print_r($task->getFieldsAsArray());
+} catch (Exception $exception){
+    echo $exception;
+}
+```
+
+### Create new task
+```php
+try{
+    $task = $client->task()->create();
+    $task->task_type_id = TaskConstants::TASK_TYPE_CONTACT;
+    $task->text = "Test task for 28643682";
+    $task->entity_id = 28643682;
+    $task->entity_type = "leads";
+    $task->complete_till = time() + 3600;
+    print_r($task->save()->getFieldsAsArray());
+} catch (Exception $exception){
+    echo $exception;
+}
+```
+
+### Update task
+```php
+try {
+    $task = $client->task()->create()->getById(50989199);
+    $task->task_type_id = TaskConstants::TASK_TYPE_MEETING;
+    $task->text = "Update task for 28643682";
+    print_r($task->update()->getFieldsAsArray());
 } catch (Exception $exception){
     echo $exception;
 }

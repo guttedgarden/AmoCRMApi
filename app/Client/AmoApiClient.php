@@ -2,10 +2,13 @@
 
 namespace App\Client;
 
+use App\Model\TaskModel;
 use App\Oauth\AmoOauth;
 use App\Services\CompanyServices;
+use App\Services\CustomerServices;
 use App\Services\LeadServices;
 use App\Services\ContactServices;
+use App\Services\TaskServices;
 
 
 class AmoApiClient extends AmoOauth
@@ -31,7 +34,7 @@ class AmoApiClient extends AmoOauth
      * This method looks for the desired service
      *
      * @param $name
-     * @return CompanyServices|ContactServices|LeadServices|void
+     * @return CompanyServices|ContactServices|CustomerServices|LeadServices|TaskServices|void
      */
     private function getService($name)
     {
@@ -41,6 +44,10 @@ class AmoApiClient extends AmoOauth
             return new ContactServices($this->apiUri, $this->configJSON["access_token"]);
         } elseif ($name === "company"){
             return new CompanyServices($this->apiUri, $this->configJSON["access_token"]);
+        } elseif ($name === "task"){
+            return new TaskServices($this->apiUri, $this->configJSON["access_token"]);
+        } elseif ($name === "customers"){
+            return new CustomerServices($this->apiUri, $this->configJSON["access_token"]);
         }
     }
 
@@ -66,5 +73,14 @@ class AmoApiClient extends AmoOauth
     public function company(): CompanyServices
     {
         return $this->getService("company");
+    }
+
+    public function task(): TaskServices
+    {
+        return $this->getService("task");
+    }
+
+    public function customers(): CustomerServices{
+        return $this->getService("customers");
     }
 }

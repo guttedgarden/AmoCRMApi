@@ -6,14 +6,15 @@ use App\Constants\UriConstants;
 use App\Interfaces\ModelInterface;
 use Exception;
 
-class Company implements ModelInterface {
+class CustomerModel implements ModelInterface{
 
-    private $fields;
+
     private $httpClient;
     private $headers;
+    private $fields;
 
     /**
-     * Company Class constructor
+     * CustomerModel Class constructor
      *
      * @param $httpClient
      * @param $headers
@@ -23,7 +24,6 @@ class Company implements ModelInterface {
         $this->httpClient = $httpClient;
         $this->headers = $headers;
     }
-
 
     /**
      * @param $key
@@ -47,68 +47,69 @@ class Company implements ModelInterface {
     }
 
     /**
-     * Saving, creating and sending a company to AmoCRM
-     * @return $this
-     * @throws Exception
-     */
-    public function save(): Company
-    {
-        // TODO: Implement save() method.
-        if (!empty($this->fields["name"])){
-            $this->fields = $this->httpClient->request("POST",UriConstants::COMPANY_URI, [$this->fields], $this->headers);
-        } else {
-            throw new Exception("The field \"name\" cannot be empty for the company");
-        }
-        return $this;
-    }
-
-    /**
-     * Saving and updating the company from AmoCRM
+     * Saving, creating and sending a customer to AmoCRM
      *
      * @return $this
      * @throws Exception
      */
-    public function update(): Company
+    public function save(): CustomerModel
     {
-        // TODO: Implement update() method.
-        if (!empty($this->fields["id"])){
-            $this->fields = $this->httpClient->request("PATCH", UriConstants::COMPANY_URI . "/" . $this->fields["id"], $this->fields, $this->headers);
+        // TODO: Implement save() method.
+        if (!empty($this->fields["name"])){
+            $this->fields = $this->httpClient->request("POST",UriConstants::CUSTOMER_URI, [$this->fields], $this->headers);
         } else {
-            throw new Exception("The field \"id\" cannot be empty for the company");
+            throw new Exception("The \"name\" field cannot be empty for a contact");
         }
         return $this;
     }
 
     /**
-     * Getting a company from AmoCRM by ID
+     * Saving and updating the customer from AmoCRM
+     *
+     * @return $this
+     * @throws Exception
+     */
+    public function update(): CustomerModel
+    {
+        // TODO: Implement update() method.
+        if (!empty($this->fields["id"])){
+            $this->fields = $this->httpClient->request("PATCH", UriConstants::CUSTOMER_URI . "/" . $this->fields["id"], $this->fields, $this->headers);
+        } else {
+            throw new Exception("The \"id\" field cannot be empty for a contact");
+        }
+        return $this;
+    }
+
+    /**
+     * Getting a CustomerModel from AmoCRM by ID
      *
      * @param int $id
      * @return $this
      * @throws Exception
      */
-    public function getById(int $id): Company
+    public function getById(int $id): CustomerModel
     {
         // TODO: Implement getById() method.
-        if(!empty($id)){
-            $this->fields = $this->httpClient->request("GET",UriConstants::COMPANY_URI . "/" . $id, [], $this->headers);
-        } else {
-            throw new Exception("The field \"id\" cannot be empty for the company");
+        if (!empty($id)){
+            $this->fields = $this->httpClient->request("GET",UriConstants::CUSTOMER_URI . "/" . $id, [], $this->headers);
+        } else{
+            throw new Exception("The \"id\" field cannot be empty for a contact");
         }
         return $this;
     }
 
     /**
-     * Adds a note to an existing company
+     * Adds a note to an existing customer
      *
      * @param array $note
      * @return $this
      * @throws Exception
      */
-    public function addNote(array $note): Company
+    public function addNote(array $note): CustomerModel
     {
         // TODO: Implement addNote() method.
         if (!empty($this->fields["id"]) || !empty($note["note_type"]) || !empty($note["text"])) {
-            $this->fields = $this->httpClient->request("POST", UriConstants::COMPANY_URI . '/' . $this->fields["id"] . '/notes', [$note], $this->headers);
+            $this->fields = $this->httpClient->request("POST", UriConstants::CUSTOMER_URI . '/' . $this->fields["id"] . '/notes', [$note], $this->headers);
         } else {
             throw new Exception("The \"id\", \"note_type\", \"text\" field cannot be empty for a contact");
         }
@@ -116,7 +117,7 @@ class Company implements ModelInterface {
     }
 
     /**
-     * Returns an array of company fields
+     * Returns an array of customer fields
      *
      * @return mixed
      */

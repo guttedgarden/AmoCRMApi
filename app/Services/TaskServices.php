@@ -2,15 +2,16 @@
 
 namespace App\Services;
 
-use App\Http\AmoHttpClient;
-use App\Model\LeadModel;
 use App\Constants\UriConstants;
+use App\Http\AmoHttpClient;
 use App\Interfaces\ServicesInterface;
+use App\Model\LeadModel;
+use App\Model\TaskModel;
 
-class LeadServices extends BaseServices implements ServicesInterface {
+class TaskServices extends BaseServices implements ServicesInterface {
 
     /**
-     * LeadServices Class constructor
+     * TaskServices Class constructor
      *
      * @param string $uri
      * @param string $accessToken
@@ -21,8 +22,9 @@ class LeadServices extends BaseServices implements ServicesInterface {
         $this->headers["Authorization"] = "Bearer " . $accessToken;
     }
 
+
     /**
-     * Returns all leads as array
+     * Returns all task as array
      *
      * @param array $filter
      * @return array
@@ -30,19 +32,17 @@ class LeadServices extends BaseServices implements ServicesInterface {
     public function getAll(array $filter): array
     {
         // TODO: Implement getAll() method.
-        if (trim(empty($filter))) {
-            $filter = [];
-        }
-        return $this->httpClient->request("GET",UriConstants::LEAD_URI_V2, $filter, $this->headers);
+        return $this->httpClient->request("GET", UriConstants::TASK_URI, $filter, $this->headers);
     }
 
     /**
-     * Creates a new instance of the LeadModel class
+     * Creates a new instance of the TaskModel class
      *
-     * @return LeadModel
+     * @return TaskModel
      */
-    public function create(): LeadModel
+    public function create(): TaskModel
     {
-        return new LeadModel($this->httpClient, $this->headers);
+        // TODO: Implement create() method.
+        return new TaskModel($this->httpClient, $this->headers);
     }
 }

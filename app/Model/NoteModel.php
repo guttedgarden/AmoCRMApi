@@ -2,7 +2,7 @@
 
 namespace App\Model;
 
-class Note{
+class NoteModel{
 
     private $fields;
 

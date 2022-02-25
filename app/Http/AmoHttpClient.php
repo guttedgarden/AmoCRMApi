@@ -3,7 +3,10 @@
 
 namespace App\Http;
 
+use App\Client\AmoApiClient;
+use App\Constants\UriConstants;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
 
 
@@ -38,10 +41,16 @@ class AmoHttpClient{
      * @param array $jsonBody
      * @param array $headers
      * @return array|mixed|ResponseInterface
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
-    public function request($method, $uri, array $jsonBody, array $headers)
+    public function request($method, $uri, array $jsonBody, string $token = null)
     {
+        $headers = UriConstants::HEADERS_TOKEN;
+
+        if($token !=null){
+            $headers["Authorization"] = "Bearer " . $token;
+        }
+
         try {
             $response = $this->httpClient->request($method, $uri, [
                 //Headers array containing User-Agent and Content-Type

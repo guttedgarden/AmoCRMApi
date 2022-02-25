@@ -6,45 +6,7 @@ use App\Constants\UriConstants;
 use App\Interfaces\ModelInterface;
 use Exception;
 
-class LeadModel implements ModelInterface {
-
-    private $fields;
-    private $httpClient;
-    private $headers;
-
-
-    /**
-     * LeadModel Class constructor
-     *
-     * @param $httpClient
-     * @param $headers
-     */
-    public function __construct($httpClient, $headers)
-    {
-        $this->httpClient = $httpClient;
-        $this->headers = $headers;
-    }
-
-    /**
-     * @param $key
-     * @return mixed
-     */
-    public function __get($key)
-    {
-        // TODO: Implement __get() method.
-        return $this->fields[$key];
-    }
-
-    /**
-     * @param $key
-     * @param $value
-     * @return mixed
-     */
-    public function __set($key, $value)
-    {
-        // TODO: Implement __set() method.
-        return $this->fields[$key] = $value;
-    }
+class LeadModel extends BaseModel implements ModelInterface {
 
     /**
      * Saving, creating and sending a lead to AmoCRM
@@ -55,7 +17,7 @@ class LeadModel implements ModelInterface {
     public function save(): LeadModel
     {
         if (!empty($this->fields["name"]) || !empty($this->fields["price"])) {
-            $this->fields = $this->httpClient->request("POST",UriConstants::LEAD_URI_V4, [$this->fields], $this->headers);
+            $this->fields = $this->httpClient->request("POST",UriConstants::LEAD_URI_V4, [$this->fields], $this->token);
         } else {
             throw new Exception("The \"name\" or \"price\" of the transaction cannot be empty");
         }
@@ -72,7 +34,7 @@ class LeadModel implements ModelInterface {
     public function update(): LeadModel
     {
         if (!empty($this->fields["id"])) {
-            $this->fields = $this->httpClient->request("PATCH", UriConstants::LEAD_URI_V4 . "/" . $this->fields["id"], $this->fields, $this->headers);
+            $this->fields = $this->httpClient->request("PATCH", UriConstants::LEAD_URI_V4 . "/" . $this->fields["id"], $this->fields, $this->token);
         } else {
             throw new Exception("The \"id\" of the transaction cannot be empty");
         }
@@ -89,25 +51,24 @@ class LeadModel implements ModelInterface {
     public function getById(int $id): LeadModel
     {
         if($id > 0){
-            $this->fields = $this->httpClient->request("GET",UriConstants::LEAD_URI_V4 . "/" . $id, [], $this->headers);
+            $this->fields = $this->httpClient->request("GET",UriConstants::LEAD_URI_V4 . "/" . $id, [], $this->token);
         } else {
             throw new Exception("The \"id\" field cannot be a negative number!");
         }
         return $this;
     }
 
+
     /**
-     * Adds a note to an existing lead
-     *
-     * @param NoteModel $note
+     * @param NoteModel $noteModel
      * @return $this
      * @throws Exception
      */
-    public function addNote(NoteModel $note):LeadModel
+    public function addNote(NoteModel $noteModel): LeadModel
     {
-        $note = $note->getFields();
+        $note = $noteModel->getFields();
         if (!empty($this->fields["id"]) || !empty($note["note_type"]) || !empty($note["text"])) {
-            $this->fields = $this->httpClient->request("POST", UriConstants::LEAD_URI_V4 . '/' . $this->fields["id"] . '/notes', [$note], $this->headers);
+            $this->fields = $this->httpClient->request("POST", UriConstants::LEAD_URI_V4 . '/' . $this->fields["id"] . '/notes', [$note], $this->token);
         }
         else {
             throw new Exception("The \"id\" of the transaction cannot be empty");
@@ -120,23 +81,20 @@ class LeadModel implements ModelInterface {
      *
      * @return mixed
      */
-    public function getFieldsAsArray()
-    {
-        // TODO: Implement getFieldsAsArray() method.
-        return $this->fields;
-    }
 
-    public function addContact(ContactModel $contact): LeadModel
-    {
-        $contact = $contact->getFieldsAsArray();
-        $this->fields["_embedded"]["tags"] = [];
-        if (!empty($contact["id"])){
-            $this->fields["_embedded"]["contact"]["id"] = $contact["id"];
-            $this->fields["_embedded"]["contact"]["request_id"] = 0;
-            $this->fields["_embedded"]["contact"]["_links"] = $contact["_links"];
-        } else {
-            $this->fields["_embedded"]["contact"] = $contact;
-        }
-        return $this;
-    }
+//    public function addContact(ContactModel $contact): LeadModel
+//    {
+//        $contact = $contact->getFieldsAsArray();
+//        $this->fields["_embedded"]["tags"] = [];
+//        if (!empty($contact["id"])){
+//            $this->fields["_embedded"]["contact"]["id"] = $contact["id"];
+//            $this->fields["_embedded"]["contact"]["request_id"] = 0;
+//            $this->fields["_embedded"]["contact"]["_links"] = $contact["_links"];
+//        } else {
+//            $this->fields["_embedded"]["contact"] = $contact;
+//        }
+//        return $this;
+//    }
+
+
 }

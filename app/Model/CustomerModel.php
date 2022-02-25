@@ -6,45 +6,7 @@ use App\Constants\UriConstants;
 use App\Interfaces\ModelInterface;
 use Exception;
 
-class CustomerModel implements ModelInterface{
-
-
-    private $httpClient;
-    private $headers;
-    private $fields;
-
-    /**
-     * CustomerModel Class constructor
-     *
-     * @param $httpClient
-     * @param $headers
-     */
-    public function __construct($httpClient, $headers)
-    {
-        $this->httpClient = $httpClient;
-        $this->headers = $headers;
-    }
-
-    /**
-     * @param $key
-     * @return mixed
-     */
-    public function __get($key)
-    {
-        // TODO: Implement __get() method.
-        return $this->fields[$key];
-    }
-
-    /**
-     * @param $key
-     * @param $value
-     * @return mixed
-     */
-    public function __set($key, $value)
-    {
-        // TODO: Implement __set() method.
-        return $this->fields[$key] = $value;
-    }
+class CustomerModel extends BaseModel implements ModelInterface{
 
     /**
      * Saving, creating and sending a customer to AmoCRM
@@ -101,13 +63,13 @@ class CustomerModel implements ModelInterface{
     /**
      * Adds a note to an existing customer
      *
-     * @param NoteModel $note
+     * @param NoteModel $noteModel
      * @return $this
      * @throws Exception
      */
-    public function addNote(NoteModel $note): CustomerModel
+    public function addNote(NoteModel $noteModel): CustomerModel
     {
-        $note = $note->getFields();
+        $note = $noteModel->getFields();
         // TODO: Implement addNote() method.
         if (!empty($this->fields["id"]) || !empty($note["note_type"]) || !empty($note["text"])) {
             $this->fields = $this->httpClient->request("POST", UriConstants::CUSTOMER_URI . '/' . $this->fields["id"] . '/notes', [$note], $this->headers);
@@ -115,16 +77,5 @@ class CustomerModel implements ModelInterface{
             throw new Exception("The \"id\", \"note_type\", \"text\" field cannot be empty for a contact");
         }
         return $this;
-    }
-
-    /**
-     * Returns an array of customer fields
-     *
-     * @return mixed
-     */
-    public function getFieldsAsArray()
-    {
-        // TODO: Implement getFieldsAsArray() method.
-        return $this->fields;
     }
 }

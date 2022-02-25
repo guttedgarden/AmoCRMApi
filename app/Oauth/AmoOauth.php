@@ -5,6 +5,8 @@ namespace App\Oauth;
 use App\Http\AmoHttpClient;
 use App\Constants\UriConstants;
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
+use http\Params;
 
 class AmoOauth {
 
@@ -52,7 +54,7 @@ class AmoOauth {
      * Path to config json file
      * @var string
      */
-    private $pathToConfig;
+    private $pathToConfig = "config.json";
 
     /**
      * Authorization code
@@ -85,9 +87,8 @@ class AmoOauth {
      * @param $client_secret
      * @param $code
      * @param $redirect_uri
-     * @param $pathToConfig
      */
-    public function __construct($subDomain, $client_id, $client_secret, $code, $redirect_uri, $pathToConfig)
+    public function __construct($subDomain, $client_id, $client_secret, $redirect_uri, $code = null)
     {
         $this->subDomain = $subDomain;
         $this->client_id = $client_id;
@@ -95,8 +96,6 @@ class AmoOauth {
         $this->code = $code;
         $this->redirect_uri = $redirect_uri;
         $this->apiUri = "{$this->protocol}{$subDomain}{$this->baseDomain}";
-        $this->pathToConfig = $pathToConfig;
-
 
         $this->httpClient = new AmoHttpClient($this->apiUri);
     }
@@ -104,19 +103,31 @@ class AmoOauth {
     /**
      * Function for getting a token
      * @return array|void
+     * @throws GuzzleException
      */
     public function getToken()
     {
         //If the config file exists and its lifetime has expired,
         //then the function to get a token by refresh_code is called.
-        if (file_exists($this->pathToConfig)){
-            $configString = file_get_contents($this->pathToConfig);
-            $this->configJSON = json_decode($configString, true);
-            if (time() >= $this->configJSON["expires_in"]){
-                return $this->getTokenByRefreshCode();
+//        if (file_exists($this->pathToConfig)){
+//            $configString = file_get_contents($this->pathToConfig);
+//            $this->configJSON = json_decode($configString, true);
+//            if (time() >= $this->configJSON["expires_in"]){
+//                return $this->getTokenByRefreshCode();
+//            }
+//        } else { //If such a file does not exist,
+//                // then the function for obtaining a token by auth_code is called.
+//            return $this->getTokenByAuthCode();
+//        }
+        if (!$this->code = null){
+            if (file_exists($this->pathToConfig)){
+                $configString = file_get_contents($this->pathToConfig);
+                $this->configJSON = json_decode($configString, true);
+                if (time() >= $this->configJSON["expires_in"]){
+                    return $this->getTokenByRefreshCode();
+                }
             }
-        } else { //If such a file does not exist,
-                // then the function for obtaining a token by auth_code is called.
+        } else {
             return $this->getTokenByAuthCode();
         }
     }
@@ -125,12 +136,13 @@ class AmoOauth {
     /**
      * Function for getting a token by authorization code
      * @return array
+     * @throws GuzzleException
      */
     private function getTokenByAuthCode(): array
     {
         try {
             $responseJson = $this->httpClient->request("POST",UriConstants::OAUTH_URI,
-                $this->requestJson(false), UriConstants::HEADERS_TOKEN);
+                $this->requestJson(false));
         } catch (Exception $e){
 
         }
@@ -147,12 +159,13 @@ class AmoOauth {
     /**
      * Function for getting a token by refresh code
      * @return array
+     * @throws GuzzleException
      */
     private function getTokenByRefreshCode(): array
     {
         try {
             $responseJson = $this->httpClient->request("POST",UriConstants::OAUTH_URI,
-                $this->requestJson(true), UriConstants::HEADERS_TOKEN);
+                $this->requestJson(true));
         } catch (Exception $e){
 
         }
@@ -162,6 +175,10 @@ class AmoOauth {
         }
 
         return $responseJson;
+    }
+
+    public function getAccessToken(){
+        return $this->configJSON["access_token"];
     }
 
     /**

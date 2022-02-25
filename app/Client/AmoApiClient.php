@@ -16,50 +16,34 @@ class AmoApiClient extends AmoOauth
 {
 
     /**
-     * AmoApiClient Class constructor
-     *
-     * @param $subDomain
-     * @param $client_id
-     * @param $client_secret
-     * @param $code
-     * @param $redirect_uri
-     * @param $pathToConfig
-     */
-    public function __construct($subDomain, $client_id, $client_secret, $code, $redirect_uri, $pathToConfig)
-    {
-        //Calling the parent method
-        parent::__construct($subDomain, $client_id, $client_secret, $code, $redirect_uri, $pathToConfig);
-    }
-
-    /**
      * This method looks for the desired service
      *
      * @param $name
      * @return CompanyServices|ContactServices|CustomerServices|UserServices|LeadServices|TaskServices|void
      */
-    private function getService($name)
-    {
-        if ($name === "leads"){
-            return new LeadServices($this->apiUri, $this->configJSON["access_token"]);
-        } elseif ($name === "contacts"){
-            return new ContactServices($this->apiUri, $this->configJSON["access_token"]);
-        } elseif ($name === "company"){
-            return new CompanyServices($this->apiUri, $this->configJSON["access_token"]);
-        } elseif ($name === "task"){
-            return new TaskServices($this->apiUri, $this->configJSON["access_token"]);
-        } elseif ($name === "customers"){
-            return new CustomerServices($this->apiUri, $this->configJSON["access_token"]);
-        } elseif ($name === "users"){
-            return new UserServices($this->apiUri, $this->configJSON["access_token"]);
-        }
-    }
+//    private function getService($name)
+//    {
+//        if ($name === "leads"){
+//            return new LeadServices($this);
+//        } elseif ($name === "contacts"){
+//            return new ContactServices($this);
+//        } elseif ($name === "company"){
+//            return new CompanyServices($this);
+//        } elseif ($name === "task"){
+//            return new TaskServices($this);
+//        } elseif ($name === "customers"){
+//            return new CustomerServices($this);
+//        } elseif ($name === "users"){
+//            return new UserServices($this);
+//        }
+//    }
 
     /**
      * @return LeadServices
      */
     public function leads(): LeadServices
     {
-        return $this->getService("leads");
+        return new LeadServices($this);
     }
 
     /**
@@ -67,7 +51,7 @@ class AmoApiClient extends AmoOauth
      */
     public function contacts(): ContactServices
     {
-        return $this->getService("contacts");
+        return new ContactServices($this);
     }
 
     /**
@@ -75,21 +59,21 @@ class AmoApiClient extends AmoOauth
      */
     public function company(): CompanyServices
     {
-        return $this->getService("company");
+        return new CompanyServices($this);
     }
 
     public function task(): TaskServices
     {
-        return $this->getService("task");
+        return new TaskServices($this);
     }
 
     public function customers(): CustomerServices
     {
-        return $this->getService("customers");
+        return new CustomerServices($this);
     }
 
     public function users(): UserServices
     {
-        return $this->getService("users");
+        return new UserServices($this);
     }
 }

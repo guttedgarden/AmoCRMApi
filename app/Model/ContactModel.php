@@ -6,44 +6,7 @@ use App\Constants\UriConstants;
 use App\Interfaces\ModelInterface;
 use Exception;
 
-class ContactModel implements ModelInterface {
-
-    private $fields;
-    private $httpClient;
-    private $headers;
-
-    /**
-     * ContactModel Class constructor
-     *
-     * @param $httpClient
-     * @param $headers
-     */
-    public function __construct($httpClient, $headers)
-    {
-        $this->httpClient = $httpClient;
-        $this->headers = $headers;
-    }
-
-    /**
-     * @param $key
-     * @return mixed
-     */
-    public function __get($key)
-    {
-        // TODO: Implement __get() method.
-        return $this->fields[$key];
-    }
-
-    /**
-     * @param $key
-     * @param $value
-     * @return mixed
-     */
-    public function __set($key, $value)
-    {
-        // TODO: Implement __set() method.
-        return $this->fields[$key] = $value;
-    }
+class ContactModel extends BaseModel implements ModelInterface {
 
     /**
      * Saving, creating and sending a contact to AmoCRM
@@ -116,14 +79,5 @@ class ContactModel implements ModelInterface {
         return $this;
     }
 
-    /**
-     * Returns an array of company fields
-     *
-     * @return mixed
-     */
-    public function getFieldsAsArray()
-    {
-        // TODO: Implement getFieldsAsArray() method.
-        return $this->fields;
-    }
+
 }

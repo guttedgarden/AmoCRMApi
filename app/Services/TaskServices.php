@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Client\AmoApiClient;
 use App\Constants\UriConstants;
 use App\Http\AmoHttpClient;
 use App\Interfaces\ServicesInterface;
@@ -9,19 +10,6 @@ use App\Model\LeadModel;
 use App\Model\TaskModel;
 
 class TaskServices extends BaseServices implements ServicesInterface {
-
-    /**
-     * TaskServices Class constructor
-     *
-     * @param string $uri
-     * @param string $accessToken
-     */
-    public function __construct(string $uri, string $accessToken)
-    {
-        $this->httpClient = new AmoHttpClient($uri);
-        $this->headers["Authorization"] = "Bearer " . $accessToken;
-    }
-
 
     /**
      * Returns all task as array

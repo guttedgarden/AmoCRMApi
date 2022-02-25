@@ -6,44 +6,7 @@ use App\Constants\UriConstants;
 use App\Interfaces\ModelInterface;
 use Exception;
 
-class UserModel {
-
-    private $fields;
-    private $httpClient;
-    private $headers;
-
-    /**
-     * UserModel Class constructor
-     *
-     * @param $httpClient
-     * @param $headers
-     */
-    public function __construct($httpClient, $headers)
-    {
-        $this->httpClient = $httpClient;
-        $this->headers = $headers;
-    }
-
-    /**
-     * @param $key
-     * @return mixed
-     */
-    public function __get($key)
-    {
-        // TODO: Implement __get() method.
-        return $this->fields[$key];
-    }
-
-    /**
-     * @param $key
-     * @param $value
-     * @return mixed
-     */
-    public function __set($key, $value)
-    {
-        // TODO: Implement __set() method.
-        return $this->fields[$key] = $value;
-    }
+class UserModel extends BaseModel {
 
 
     /**
@@ -80,10 +43,4 @@ class UserModel {
         }
         return $this;
     }
-        public function getFieldsAsArray()
-    {
-        // TODO: Implement getFieldsAsArray() method.
-        return $this->fields;
-    }
-
 }

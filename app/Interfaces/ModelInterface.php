@@ -42,10 +42,16 @@ interface ModelInterface
     /**
      * Adds a note to an existing CompanyModel|ContactModel|LeadModel
      *
-     * @param array $note
      * @return mixed
      */
-    public function addNote(NoteModel $note);
+    public function newNote();
+
+    /**
+     * Save note to an existing CompanyModel
+     * @param NoteModel $noteModel
+     * @return mixed
+     */
+    public function addNote(NoteModel $noteModel);
 
     /**
      * Returns an array of CompanyModel|ContactModel|LeadModel fields

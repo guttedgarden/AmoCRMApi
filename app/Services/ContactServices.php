@@ -2,25 +2,13 @@
 
 namespace App\Services;
 
+use App\Client\AmoApiClient;
 use App\Http\AmoHttpClient;
 use App\Constants\UriConstants;
 use App\Interfaces\ServicesInterface;
 use App\Model\ContactModel;
 
 class ContactServices extends BaseServices implements ServicesInterface{
-
-
-    /**
-     * ContactServices Class constructor
-     *
-     * @param string $uri
-     * @param string $accessToken
-     */
-    public function __construct(string $uri, string $accessToken)
-    {
-        $this->httpClient = new AmoHttpClient($uri);
-        $this->headers["Authorization"] = "Bearer " . $accessToken;
-    }
 
     /**
      * Returns all contact as array
@@ -34,7 +22,7 @@ class ContactServices extends BaseServices implements ServicesInterface{
         if (trim(empty($filter))) {
             $filter = [];
         }
-        return $this->httpClient->request("GET", UriConstants::CONTACT_URI_V2, $filter, $this->headers);
+        return $this->httpClient->request("GET", UriConstants::CONTACT_URI_V2, $filter, $this->token);
     }
 
 

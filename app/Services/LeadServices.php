@@ -2,24 +2,13 @@
 
 namespace App\Services;
 
+use App\Client\AmoApiClient;
 use App\Http\AmoHttpClient;
 use App\Model\LeadModel;
 use App\Constants\UriConstants;
 use App\Interfaces\ServicesInterface;
 
 class LeadServices extends BaseServices implements ServicesInterface {
-
-    /**
-     * LeadServices Class constructor
-     *
-     * @param string $uri
-     * @param string $accessToken
-     */
-    public function __construct(string $uri, string $accessToken)
-    {
-        $this->httpClient = new AmoHttpClient($uri);
-        $this->headers["Authorization"] = "Bearer " . $accessToken;
-    }
 
     /**
      * Returns all leads as array
@@ -33,7 +22,7 @@ class LeadServices extends BaseServices implements ServicesInterface {
         if (trim(empty($filter))) {
             $filter = [];
         }
-        return $this->httpClient->request("GET",UriConstants::LEAD_URI_V2, $filter, $this->headers);
+        return $this->httpClient->request("GET",UriConstants::LEAD_URI_V2, $filter, $this->token);
     }
 
     /**
@@ -43,6 +32,6 @@ class LeadServices extends BaseServices implements ServicesInterface {
      */
     public function create(): LeadModel
     {
-        return new LeadModel($this->httpClient, $this->headers);
+        return new LeadModel($this->httpClient,$this->token);
     }
 }

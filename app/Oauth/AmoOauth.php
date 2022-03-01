@@ -6,7 +6,6 @@ use App\Http\AmoHttpClient;
 use App\Constants\UriConstants;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
-use http\Params;
 
 class AmoOauth {
 
@@ -116,23 +115,11 @@ class AmoOauth {
      */
     public function getToken()
     {
-        //If the config file exists and its lifetime has expired,
-        //then the function to get a token by refresh_code is called.
-//        if (file_exists($this->pathToConfig)){
-//            $configString = file_get_contents($this->pathToConfig);
-//            $this->configJSON = json_decode($configString, true);
-//            if (time() >= $this->configJSON["expires_in"]){
-//                return $this->getTokenByRefreshCode();
-//            }
-//        } else { //If such a file does not exist,
-//                // then the function for obtaining a token by auth_code is called.
-//            return $this->getTokenByAuthCode();
-//        }
         if (!$this->authCode = null){
             if (file_exists($this->pathToConfig)){
                 $configString = file_get_contents($this->pathToConfig);
                 $this->configJSON = json_decode($configString, true);
-                if (time() >= $this->configJSON["expires_in"]){
+                if (time() > $this->configJSON["expires_in"]){
                     return $this->getTokenByRefreshCode();
                 }
             }

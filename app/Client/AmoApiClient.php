@@ -14,30 +14,6 @@ use App\Services\UserServices;
 
 class AmoApiClient extends AmoOauth
 {
-
-    /**
-     * This method looks for the desired service
-     *
-     * @param $name
-     * @return CompanyServices|ContactServices|CustomerServices|UserServices|LeadServices|TaskServices|void
-     */
-//    private function getService($name)
-//    {
-//        if ($name === "leads"){
-//            return new LeadServices($this);
-//        } elseif ($name === "contacts"){
-//            return new ContactServices($this);
-//        } elseif ($name === "company"){
-//            return new CompanyServices($this);
-//        } elseif ($name === "task"){
-//            return new TaskServices($this);
-//        } elseif ($name === "customers"){
-//            return new CustomerServices($this);
-//        } elseif ($name === "users"){
-//            return new UserServices($this);
-//        }
-//    }
-
     /**
      * @return LeadServices
      */
@@ -62,16 +38,25 @@ class AmoApiClient extends AmoOauth
         return new CompanyServices($this);
     }
 
+    /**
+     * @return TaskServices
+     */
     public function task(): TaskServices
     {
         return new TaskServices($this);
     }
 
+    /**
+     * @return CustomerServices
+     */
     public function customers(): CustomerServices
     {
         return new CustomerServices($this);
     }
 
+    /**
+     * @return UserServices
+     */
     public function users(): UserServices
     {
         return new UserServices($this);

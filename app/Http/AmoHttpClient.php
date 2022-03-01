@@ -5,6 +5,7 @@ namespace App\Http;
 
 use App\Client\AmoApiClient;
 use App\Constants\UriConstants;
+use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
@@ -23,6 +24,7 @@ class AmoHttpClient{
     /** AmoHttpClient Class constructor
      *
      * @param string $domain
+     * @param string|null $token
      */
     public function __construct(string $domain, string $token = null)
     {
@@ -49,7 +51,7 @@ class AmoHttpClient{
     {
         $headers = UriConstants::HEADERS_TOKEN;
 
-        if($this->token !=null){
+        if($this->token != null){
             $headers["Authorization"] = "Bearer " . $this->token;
         }
 
@@ -61,7 +63,7 @@ class AmoHttpClient{
             ]);
             //Response parsing
             $response = $this->responseParse($response);
-        } catch (\Exception $exception){
+        } catch (Exception $exception){
             echo $exception;
         }
 

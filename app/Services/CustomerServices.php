@@ -7,6 +7,7 @@ use App\Constants\UriConstants;
 use App\Http\AmoHttpClient;
 use App\Interfaces\ServicesInterface;
 use App\Model\CustomerModel;
+use GuzzleHttp\Exception\GuzzleException;
 
 class CustomerServices extends BaseServices implements ServicesInterface{
 
@@ -15,15 +16,11 @@ class CustomerServices extends BaseServices implements ServicesInterface{
      *
      * @param array $filter
      * @return array
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
-    public function getAll(array $filter): array
+    public function getAll(array $filter = []): array
     {
-        // TODO: Implement getAll() method.
-        if(trim(empty($filter))){
-            $filter = [];
-        }
-        return $this->httpClient->request("GET", UriConstants::CUSTOMER_URI, $filter, $this->headers);
+        return $this->httpClient->request("GET", UriConstants::CUSTOMER_URI, $filter);
     }
 
     /**
@@ -34,6 +31,6 @@ class CustomerServices extends BaseServices implements ServicesInterface{
     public function create(): CustomerModel
     {
         // TODO: Implement create() method.
-        return new CustomerModel($this->httpClient, $this->token);
+        return new CustomerModel($this->client);
     }
 }

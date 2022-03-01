@@ -9,16 +9,16 @@ use App\Constants\UriConstants;
 class BaseServices{
     protected $httpClient;
     protected $token;
+    protected $client;
 
     /**
      * CompanyServices Class constructor
      *
-     * @param string $uri
-     * @param string $accessToken
+     * @param AmoApiClient $amoClient
      */
-    public function __construct(AmoApiClient $client)
+    public function __construct(AmoApiClient $amoClient)
     {
-        $this->httpClient = new AmoHttpClient($client->apiUri);
-        $this->token = $client->getAccessToken();
+        $this->client = $amoClient;
+        $this->httpClient = new AmoHttpClient($this->client->apiUri, $this->client->getAccessToken());
     }
 }

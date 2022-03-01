@@ -16,13 +16,13 @@ class ContactServices extends BaseServices implements ServicesInterface{
      * @param array $filter
      * @return array
      */
-    public function getAll(array $filter): array
+    public function getAll(array $filter = []): array
     {
         // TODO: Implement getAll() method.
         if (trim(empty($filter))) {
             $filter = [];
         }
-        return $this->httpClient->request("GET", UriConstants::CONTACT_URI_V2, $filter, $this->token);
+        return $this->httpClient->request("GET", UriConstants::CONTACT_URI_V2, $filter);
     }
 
 
@@ -34,6 +34,6 @@ class ContactServices extends BaseServices implements ServicesInterface{
     public function create(): ContactModel
     {
         // TODO: Implement create() method.
-        return new ContactModel($this->httpClient, $this->headers);
+        return new ContactModel($this->client);
     }
 }

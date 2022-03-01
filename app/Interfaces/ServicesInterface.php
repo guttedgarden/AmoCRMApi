@@ -10,7 +10,7 @@ interface ServicesInterface
      * @param array $filter
      * @return mixed
      */
-    public function getAll(array $filter);
+    public function getAll(array $filter = []);
 
     /**
      * Creates a new instance of the CompanyModel|ContactModel|LeadModel class

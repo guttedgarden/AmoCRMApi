@@ -7,6 +7,7 @@ use App\Http\AmoHttpClient;
 use App\Model\LeadModel;
 use App\Constants\UriConstants;
 use App\Interfaces\ServicesInterface;
+use GuzzleHttp\Exception\GuzzleException;
 
 class LeadServices extends BaseServices implements ServicesInterface {
 
@@ -15,14 +16,12 @@ class LeadServices extends BaseServices implements ServicesInterface {
      *
      * @param array $filter
      * @return array
+     * @throws GuzzleException
      */
-    public function getAll(array $filter): array
+    public function getAll(array $filter = []): array
     {
         // TODO: Implement getAll() method.
-        if (trim(empty($filter))) {
-            $filter = [];
-        }
-        return $this->httpClient->request("GET",UriConstants::LEAD_URI_V2, $filter, $this->token);
+        return $this->httpClient->request("GET",UriConstants::LEAD_URI_V2, $filter);
     }
 
     /**
@@ -32,6 +31,6 @@ class LeadServices extends BaseServices implements ServicesInterface {
      */
     public function create(): LeadModel
     {
-        return new LeadModel($this->httpClient,$this->token);
+        return new LeadModel($this->client);
     }
 }

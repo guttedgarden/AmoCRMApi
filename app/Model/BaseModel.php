@@ -7,20 +7,17 @@ use App\Http\AmoHttpClient;
 
 class BaseModel
 {
-
-    protected $httpClient;
-    protected $token;
-    /**
-     * BaseModel Class constructor
-     *
-     * @param $httpClient
-     * @param $headers
-     */
     protected $fields;
-    public function __construct($httpClient, $token)
+    protected $httpClient;
+
+    /**
+     * CompanyServices Class constructor
+     *
+     * @param AmoApiClient $client
+     */
+    public function __construct(AmoApiClient $client)
     {
-        $this->httpClient = $httpClient;
-        $this->token = $token;
+        $this->httpClient = new AmoHttpClient($client->apiUri, $client->getAccessToken());
     }
 
     /**

@@ -18,12 +18,13 @@ class AmoHttpClient{
      * @var Client
      */
     private $httpClient;
+    private $token;
 
     /** AmoHttpClient Class constructor
      *
-     * @param $domain
+     * @param string $domain
      */
-    public function __construct($domain)
+    public function __construct(string $domain, string $token = null)
     {
         //Creating GuzzleHttp
         $this->httpClient = new Client([
@@ -31,6 +32,8 @@ class AmoHttpClient{
             'timeout' => 3.0,
             'http_errors' => true
         ]);
+
+        $this->token = $token;
     }
 
     /**
@@ -39,16 +42,15 @@ class AmoHttpClient{
      * @param $method
      * @param $uri
      * @param array $jsonBody
-     * @param array $headers
      * @return array|mixed|ResponseInterface
      * @throws GuzzleException
      */
-    public function request($method, $uri, array $jsonBody, string $token = null)
+    public function request($method, $uri, array $jsonBody = [])
     {
         $headers = UriConstants::HEADERS_TOKEN;
 
-        if($token !=null){
-            $headers["Authorization"] = "Bearer " . $token;
+        if($this->token !=null){
+            $headers["Authorization"] = "Bearer " . $this->token;
         }
 
         try {

@@ -5,6 +5,7 @@ namespace App\Model;
 use App\Constants\UriConstants;
 use App\Interfaces\ModelInterface;
 use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 
 class LeadModel extends BaseModel implements ModelInterface {
 
@@ -12,12 +13,13 @@ class LeadModel extends BaseModel implements ModelInterface {
      * Saving, creating and sending a lead to AmoCRM
      *
      * @return $this
+     * @throws GuzzleException
      * @throws Exception
      */
     public function save(): LeadModel
     {
         if (!empty($this->fields["name"]) || !empty($this->fields["price"])) {
-            $this->fields = $this->httpClient->request("POST",UriConstants::LEAD_URI_V4, [$this->fields], $this->token);
+            $this->fields = $this->httpClient->request("POST",UriConstants::LEAD_URI_V4, [$this->fields]);
         } else {
             throw new Exception("The \"name\" or \"price\" of the transaction cannot be empty");
         }
@@ -29,12 +31,13 @@ class LeadModel extends BaseModel implements ModelInterface {
      * Saving and updating the lead from AmoCRM
      *
      * @return $this
+     * @throws GuzzleException
      * @throws Exception
      */
     public function update(): LeadModel
     {
         if (!empty($this->fields["id"])) {
-            $this->fields = $this->httpClient->request("PATCH", UriConstants::LEAD_URI_V4 . "/" . $this->fields["id"], $this->fields, $this->token);
+            $this->fields = $this->httpClient->request("PATCH", UriConstants::LEAD_URI_V4 . "/" . $this->fields["id"], $this->fields);
         } else {
             throw new Exception("The \"id\" of the transaction cannot be empty");
         }
@@ -46,12 +49,13 @@ class LeadModel extends BaseModel implements ModelInterface {
      *
      * @param int $id
      * @return $this
+     * @throws GuzzleException
      * @throws Exception
      */
     public function getById(int $id): LeadModel
     {
         if($id > 0){
-            $this->fields = $this->httpClient->request("GET",UriConstants::LEAD_URI_V4 . "/" . $id, [], $this->token);
+            $this->fields = $this->httpClient->request("GET",UriConstants::LEAD_URI_V4 . "/" . $id);
         } else {
             throw new Exception("The \"id\" field cannot be a negative number!");
         }
@@ -62,25 +66,20 @@ class LeadModel extends BaseModel implements ModelInterface {
     /**
      * @param NoteModel $noteModel
      * @return $this
+     * @throws GuzzleException
      * @throws Exception
      */
     public function addNote(NoteModel $noteModel): LeadModel
     {
         $note = $noteModel->getFields();
         if (!empty($this->fields["id"]) || !empty($note["note_type"]) || !empty($note["text"])) {
-            $this->fields = $this->httpClient->request("POST", UriConstants::LEAD_URI_V4 . '/' . $this->fields["id"] . '/notes', [$note], $this->token);
+            $this->fields = $this->httpClient->request("POST", UriConstants::LEAD_URI_V4 . '/' . $this->fields["id"] . '/notes', [$note]);
         }
         else {
-            throw new Exception("The \"id\" of the transaction cannot be empty");
+            throw new Exception("The \"id\" or \"note_type\" or \"text\" of the transaction cannot be empty");
         }
         return $this;
     }
-
-    /**
-     * Returns an array of company fields
-     *
-     * @return mixed
-     */
 
 //    public function addContact(ContactModel $contact): LeadModel
 //    {

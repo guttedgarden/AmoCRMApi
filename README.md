@@ -55,6 +55,7 @@ JSON file with tokens is stored in the location specified by the user. The JSON 
 ```
 
 ### Creating a new client
+If a JSON file with Refresh Token exists, then the following construction is used (If no code is passed, the Refresh method will be called. If passed, the Auth method will be called.)
 ```php
 use App\Client\AmoApiClient;
 
@@ -62,15 +63,35 @@ $client = new AmoApiClient(
     $subDomain,
     $client_id,
     $client_secret,
-    $code,
-    $redirect_uri,
-    $pathToConfig);
+    $redirect_uri
+);
 ```
+If this is the first run, then the following construction is used
+```php
+use App\Client\AmoApiClient;
+
+$client = new AmoApiClient(
+    $subDomain,
+    $client_id,
+    $client_secret,
+    $redirect_uri,
+    $code
+);
+
+// OR
+$client = new AmoApiClient(
+    $subDomain,
+    $client_id,
+    $client_secret,
+    $redirect_uri
+);
+$client->setAuthCode($code);
+```
+
 ### Getting token
 ```php
 try {
     $tokens = $client->getToken();
-    echo PHP_EOL . PHP_EOL;
 } catch (Exception $exception){
     echo $exception;
 }
@@ -90,7 +111,6 @@ try{
 ```php
 try {
     $lead = $client->leads()->create()->getById(28643682);
-    print_r($lead);
 } catch (Exception $exception){
     echo $exception;
 }
@@ -99,7 +119,7 @@ try {
 ```php
 try{
     $lead = $client->leads()->create();
-    $lead->name = "APVTestNew32";
+    $lead->name = "VTestNew213152224";
     $lead->price = 321;
     print_r($lead->save());
 } catch (Exception $exception){
@@ -110,7 +130,7 @@ try{
 ```php
 try {
     $lead = $client->leads()->create();
-    $lead->id = 28643682;
+    $lead->id = 28709597;
     $lead->name = "APVTestUpdate32";
     $lead->price = 123;
     print_r($lead->update());
@@ -123,8 +143,8 @@ try {
 ### Add note to lead
 ```php
 try {
-    $lead = $client->leads()->create()->getById(28643682);
-    $note = new Note();
+    $lead = $client->leads()->create()->getById(28709597);
+    $note = $lead->newNote();
     $note->note_type = NoteConstants::NOTE_TYPE_COMMON;
     $note->text = "New test note";
     print_r($lead->addNote($note));
@@ -157,7 +177,7 @@ try {
 ```php
 try{
     $contact = $client->contacts()->create();
-    $contact->name = "APVTestNewContact";
+    $contact->name = "APVTestNewTestContact";
     print_r($contact->save());
 } catch (Exception $exception){
     echo $exception;
@@ -167,8 +187,8 @@ try{
 ```php
 try {
     $contact = $client->contacts()->create();
-    $contact->id = 46050921;
-    $contact->name = "APVTestNewContactUpdate";
+    $contact->id = 46102629;
+    $contact->name = "APVTestNewContactUpdate!";
     print_r($contact->update());
 } catch (Exception $exception){
     echo $exception;
@@ -177,8 +197,8 @@ try {
 ### Add note to contact
 ```php
 try {
-    $contact = $client->contacts()->create()->getById(46050921);
-    $note = new Note();
+    $contact = $client->contacts()->create()->getById(46102629);
+    $note = $contact->newNote();
     $note->note_type = NoteConstants::NOTE_TYPE_COMMON;
     $note->text = "New test note to ContactModel";
     print_r($contact->addNote($note));
@@ -230,10 +250,10 @@ try {
 ### Add note to company
 ```php
 try {
-    $company = $client->company()->create()->getById(46050853);
-    $note = new Note();
+    $company = $client->company()->create()->getById(46102613);
+    $note = $company->newNote();
     $note->note_type = NoteConstants::NOTE_TYPE_COMMON;
-    $note->text = "New test note to CompanyModel";
+    $note->text = "New test note to CompanyModel!";
     print_r($company->addNote($note));
 } catch (Exception $exception){
     echo $exception;
@@ -262,8 +282,8 @@ try {
 ```php
 try{
     $customer = $client->customers()->create();
-    $customer->name = "APVTestCustomer";
-    print_r($customer->save());
+    $customer->name = "!APVTestCustomer";
+    print_r($customer->save()->getFieldsAsArray());
 } catch (Exception $exception){
     echo $exception;
 }
@@ -272,8 +292,8 @@ try{
 ```php
 try {
     $customer = $client->customers()->create();
-    $customer->id = 187447;
-    $customer->name = "APVTestCustomerUpdate";
+    $customer->id = 187873;
+    $customer->name = "APVTestCustomerUpdate!";
     print_r($customer->update());
 } catch (Exception $exception){
     echo $exception;
@@ -282,8 +302,8 @@ try {
 ### Add note to customer
 ```php
 try {
-    $customer = $client->customers()->create()->getById(187447);
-    $note = new Note();
+    $customer = $client->customers()->create()->getById(187873);
+    $note = $customer->newNote();
     $note->note_type = NoteConstants::NOTE_TYPE_COMMON;
     $note->text = "New test note to CustomerModel";
     print_r($customer->addNote($note));

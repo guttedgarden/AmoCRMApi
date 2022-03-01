@@ -60,7 +60,7 @@ class AmoOauth {
      * Authorization code
      * @var string
      */
-    private $code;
+    private $authCode;
 
     /**
      * MUST match the redirect link in the integration
@@ -82,24 +82,33 @@ class AmoOauth {
     /**
      * AmoOauth Class constructor
      *
-     * @param $subDomain
-     * @param $client_id
-     * @param $client_secret
-     * @param $code
-     * @param $redirect_uri
+     * @param string $subDomain
+     * @param string $client_id
+     * @param string $client_secret
+     * @param string $redirect_uri
+     * @param string|null $authCode
      */
-    public function __construct($subDomain, $client_id, $client_secret, $redirect_uri, $code = null)
+    public function __construct(string $subDomain, string $client_id, string $client_secret, string $redirect_uri, string $authCode = null)
     {
         $this->subDomain = $subDomain;
         $this->client_id = $client_id;
         $this->client_secret = $client_secret;
-        $this->code = $code;
+        $this->authCode = $authCode;
         $this->redirect_uri = $redirect_uri;
         $this->apiUri = "{$this->protocol}{$subDomain}{$this->baseDomain}";
 
         $this->httpClient = new AmoHttpClient($this->apiUri);
     }
 
+    /**
+     * Function adding auth code
+     * @param string $authCode
+     * @return void
+     */
+    public function setAuthCode(string $authCode): void
+    {
+        $this->authCode = $authCode;
+    }
     /**
      * Function for getting a token
      * @return array|void
@@ -119,7 +128,7 @@ class AmoOauth {
 //                // then the function for obtaining a token by auth_code is called.
 //            return $this->getTokenByAuthCode();
 //        }
-        if (!$this->code = null){
+        if (!$this->authCode = null){
             if (file_exists($this->pathToConfig)){
                 $configString = file_get_contents($this->pathToConfig);
                 $this->configJSON = json_decode($configString, true);
@@ -131,7 +140,6 @@ class AmoOauth {
             return $this->getTokenByAuthCode();
         }
     }
-
 
     /**
      * Function for getting a token by authorization code
@@ -208,7 +216,7 @@ class AmoOauth {
             "client_id" => $this->client_id,
             "client_secret" => $this->client_secret,
             "grant_type" => ($tokenType ? "refresh_token" : "authorization_code"),
-            ($tokenType ? "refresh_token" : "code") => ($tokenType ? $this->configJSON["refresh_token"] : $this->code),
+            ($tokenType ? "refresh_token" : "code") => ($tokenType ? $this->configJSON["refresh_token"] : $this->authCode),
             "redirect_uri" => $this->redirect_uri
         ];
     }

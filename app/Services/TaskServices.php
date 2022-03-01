@@ -17,10 +17,10 @@ class TaskServices extends BaseServices implements ServicesInterface {
      * @param array $filter
      * @return array
      */
-    public function getAll(array $filter): array
+    public function getAll(array $filter = []): array
     {
         // TODO: Implement getAll() method.
-        return $this->httpClient->request("GET", UriConstants::TASK_URI, $filter, $this->headers);
+        return $this->httpClient->request("GET", UriConstants::TASK_URI, $filter);
     }
 
     /**
@@ -31,6 +31,6 @@ class TaskServices extends BaseServices implements ServicesInterface {
     public function create(): TaskModel
     {
         // TODO: Implement create() method.
-        return new TaskModel($this->httpClient, $this->headers);
+        return new TaskModel($this->client);
     }
 }

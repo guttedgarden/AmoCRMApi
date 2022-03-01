@@ -23,12 +23,12 @@ class UserServices extends BaseServices {
     public function getAllUsers(array $filter): array
     {
         // TODO: Implement getAll() method.
-        return $this->httpClient->request("GET", UriConstants::USER_URI, $filter, $this->headers);
+        return $this->httpClient->request("GET", UriConstants::USER_URI, $filter);
     }
 
     public function getAllRoles(array $filter): array{
         // TODO: Implement getAll() method.
-        return $this->httpClient->request("GET", UriConstants::ROLE_URI, $filter, $this->headers);
+        return $this->httpClient->request("GET", UriConstants::ROLE_URI, $filter);
     }
 
     /**
@@ -39,6 +39,6 @@ class UserServices extends BaseServices {
     public function create(): UserModel
     {
         // TODO: Implement create() method.
-        return new UserModel($this->httpClient, $this->headers);
+        return new UserModel($this->client);
     }
 }
